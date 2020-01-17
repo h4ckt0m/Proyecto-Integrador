@@ -42,6 +42,7 @@ void merge(tListaGasolineras& gasolineras, int low, int high, int mid);
 bool operator<(tGasolineras op1, tGasolineras op2);
 void menu(tListaGasolineras& listaGasolineras);
 int mostrarMenu();
+void accederLocalizacion(tListaGasolineras listaGasolineras, int posicion);
 
 int main() {
     tListaGasolineras listaGasolineras;
@@ -105,8 +106,8 @@ void menu(tListaGasolineras &listaGasolineras) {
                     cout << "Localidad: " << listaGasolineras.registros[0].localidad << endl;
                     cout << "Provincia: " << listaGasolineras.registros[0].provincia << endl;
                     cout << "Precio gasolina: " << listaGasolineras.registros[0].precio << endl;
-                    cout << "Latitud: " << listaGasolineras.registros[0].latitud << endl;
-                    cout << "Longitud: " << listaGasolineras.registros[0].longitud << endl;
+
+                    accederLocalizacion(listaGasolineras, 0);
                 }
                 else {
                     cout << "Nada que mostrar, carga primero los datos" << endl;
@@ -121,8 +122,8 @@ void menu(tListaGasolineras &listaGasolineras) {
                     cout << "Localidad: " << listaGasolineras.registros[listaGasolineras.contador-1].localidad << endl;
                     cout << "Provincia: " << listaGasolineras.registros[listaGasolineras.contador-1].provincia << endl;
                     cout << "Precio gasolina: " << listaGasolineras.registros[listaGasolineras.contador-1].precio << endl;
-                    cout << "Latitud: " << listaGasolineras.registros[listaGasolineras.contador-1].latitud << endl;
-                    cout << "Longitud: " << listaGasolineras.registros[listaGasolineras.contador-1].longitud << endl;
+
+                    accederLocalizacion(listaGasolineras, listaGasolineras.contador - 1);
                 }
                 else {
                     cout << "Nada que mostrar, carga primero los datos" << endl;
@@ -136,6 +137,23 @@ void menu(tListaGasolineras &listaGasolineras) {
     } while (op != 0);
 }
 
+void accederLocalizacion(tListaGasolineras listaGasolineras, int posicion) {
+    int confirmacion;
+    cout << "Desea ver la localizacion en GoogleMaps?" << endl;
+    cout << "1. Acceder a localizacion." << endl;
+    cout << "2. Quizas en otro momento." << endl;
+    cout << "Opcion: ";
+    cin >> confirmacion;
+    while ((confirmacion < 1) || (confirmacion > 2)) {
+        cout << "Elija una opcion valida: ";
+        cin >> confirmacion;
+    }
+    if (confirmacion == 1) {
+        string url = "https://www.google.es/maps/place/" + to_string(listaGasolineras.registros[posicion].latitud) + ',' + to_string(listaGasolineras.registros[posicion].longitud);
+        ShellExecuteA(NULL, "open", url.c_str(), NULL, NULL, SW_SHOWNORMAL);
+    }
+}
+
 int mostrarMenu() {
     int op = 0;
     cout << "1. Cargar listado de gasolineras en base a tipo de gasolina" << endl;
@@ -145,6 +163,10 @@ int mostrarMenu() {
     cout << "0. Salir" << endl;
     cout << "Opcion: ";
     cin >> op;
+    while ((op < 0) || (op > 4)) {
+        cout << "Opcion no valida, elige de nuevo: ";
+        cin >> op;
+    }
 
     return op;
 }
