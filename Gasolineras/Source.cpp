@@ -137,6 +137,7 @@ void menu(tListaGasolineras &listaGasolineras) {
     } while (op != 0);
 }
 
+
 void accederLocalizacion(tListaGasolineras listaGasolineras, int posicion) {
     int confirmacion;
     cout << "Desea ver la localizacion en GoogleMaps?" << endl;
